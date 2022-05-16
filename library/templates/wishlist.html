@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wishlist</title>
+</head>
+<body>
+    <h1> Wishlist </h1>
+    {% for book_dict in list_with_dict_book_info %}
+    {{ book_dict["book_title"] }}
+        -
+    {{ book_dict["book_author"] }}<br/>
+    {% endfor %}
+    <p>
+        <a href="/">Home</a>
+    </p>
+
+
+
+</body>
+</html>
