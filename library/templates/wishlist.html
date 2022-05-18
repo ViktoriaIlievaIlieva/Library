@@ -3,19 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>Wishlist</title>
+    <style>
+
+    table, th, td {
+        border: 3px solid rebeccapurple;
+        border-collapse: collapse;}
+
+    th {text-align: center}
+
+    td {text-align: left}
+
+    </style>
 </head>
+
 <body>
     <h1> Wishlist </h1>
-    {% for book_dict in list_with_dict_book_info %}
-    {{ book_dict["book_title"] }}
-        -
-    {{ book_dict["book_author"] }}<br/>
-    {% endfor %}
+    <table style="width:30%" >
+    <thead>
+        <tr>
+            <th>Книга</th>
+            <th>Автор</th>
+        </tr>
+    </thead>
+
+
+    <tbody>
+        {% for book_dict in list_with_dict_book_info %}
+            <tr>
+                <td>{{ book_dict["book_title"] }}</td>
+                <td>{{ book_dict["book_author"] }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
     <p>
         <a href="/">Home</a>
+        ---
+        <a href="/wishlist-add">Добави нова книга</a>
+        ---
+
     </p>
-
-
-
-</body>
-</html>
