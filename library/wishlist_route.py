@@ -8,7 +8,7 @@ blueprint_wishlist = Blueprint("Wishlist", __name__)
 @blueprint_wishlist.route("/wishlist-add", methods=["GET", "POST"])
 def wishlist_add():
     if request.method == "GET":
-        return render_template("new_book_for_wishlist.html")
+        return render_template("wishlist_templates/new_book_for_wishlist.html")
     else:
         book = request.form["book"]
         author = request.form["author"]
@@ -41,4 +41,4 @@ def wishlist():
         book_info: dict = {"book_title": book, "book_author": author}
         list_with_dict_for_books_and_authors.append(book_info)
 
-    return render_template("wishlist.html", list_with_dict_book_info=list_with_dict_for_books_and_authors)
+    return render_template("wishlist_templates/wishlist.html", list_with_dict_book_info=list_with_dict_for_books_and_authors)
