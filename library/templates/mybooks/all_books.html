@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Book</title>
+    <title>Books</title>
     <style>
         table, th, td {
             border: 1px solid gray;
@@ -36,7 +36,7 @@
     <tbody>
     {% for book in books_info %}
         <tr>
-            <td><a href="/single_book">{{ book["bg_name"] }}</a></td>
+            <td><a href="/single_book?id={{ book["id"] }}">{{ book["bg_name"] }}</a></td>
             <td>{{ book["eng_name"] }}</td>
             <td>{{ book["author"] }}</td>
             <td>{{ book["read"] }}</td>

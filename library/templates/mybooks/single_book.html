@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ bg_title }}</title>
+</head>
+<body>
+<h1>{{ bg_title }}</h1>
+
+<p>
+    <a style="margin-right: 10px" href="update_single_book?id={{ id }}">Edit</a>
+    <a href="delete_single_book?id={{ id }}">Delete</a>
+</p>
+
+Книга: {{ bg_title }}/{{ eng_title }}<br/>
+Автор: <a href="/author_page">{{ author }}</a><br/>
+формат: {{ format }}<br/>
+Местонахождение: {{ location }}<br/>
+Статус: {{ read }}<br/>
+Резюме: {{ review }}<br/>
+Серия:<a href="/series">{{ series }}</a><br/>
+
+<p>
+    <a style="margin-right: 10px" href="/">Home</a>
+    <a href="/mybooks">Back to Books</a>
+</p>
+
+<p>
+
+
+</p>
+
+
+</body>
+</html>
