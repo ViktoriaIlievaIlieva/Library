@@ -58,9 +58,10 @@ def single_book():
 
 @blueprint_books.route("/single_book_update", methods=["GET", "POST"])
 def single_book_update():
-    title = request.args["bg_title"]
     if request.method == "GET":
+
         id = request.args["id"]
+
         with get_connection() as connection:
             single_book_cursor: CursorResult = connection.execute("""
                 SELECT NameBG , NameENG, AuthorID, FormatID, LocationID, Read, Info, RelatedID
@@ -105,11 +106,34 @@ def single_book_update():
 
             tuple_list_related: list = related_cursor.fetchall()
 
-            return render_template("mybooks/single_book_update.html", bg_title=single_book_info[0],
-                                   eng_title=single_book_info[1],
-                                   author=single_book_info[2], format=single_book_info[3], location=single_book_info[4],
-                                   read=single_book_info[5], review=single_book_info[6], series=single_book_info[7],
-                                   other_books_in_series=single_book_info[8], id=id,
-                                   list_with_authors=tuple_list_authors, list_with_formats=tuple_list_formats,
-                                   list_with_locations=tuple_list_locations,
-                                   list_with_series_types=tuple_list_series_types, list_with_related=tuple_list_related)
+        return render_template("mybooks/single_book_update.html", bg_title=single_book_info[0],
+                               eng_title=single_book_info[1],
+                               author=single_book_info[2], format=single_book_info[3], location=single_book_info[4],
+                               read=single_book_info[5], review=single_book_info[6],
+                               part_of_the_series=single_book_info[7], id=id,
+                               list_with_authors=tuple_list_authors, list_with_formats=tuple_list_formats,
+                               list_with_locations=tuple_list_locations,
+                               list_with_series_types=tuple_list_series_types, list_with_related=tuple_list_related)
+
+    else:
+        id = request.form["id"]
+        if "read" in request.form:
+            read = 1
+        else:
+            read = 0
+        bg_title = request.form["bg_title"]
+        eng_title = request.form["eng_title"]
+        author = request.form["author"]
+        format = request.form["format"]
+        location = request.form["location"]
+        info = request.form["info"]
+        part_of_the_series = request.form["part_of_the_series"]
+
+        with get_connection() as connection:
+            connection.execute("""
+            UPDATE Books
+            SET NameBG=?, NameENG=?, AuthorID=?, FormatID=?, LocationID=?, RelatedID=?, Info=?, Read=?
+            WHERE id=?
+            """, bg_title, eng_title, author, format, location, part_of_the_series, info, read, id)
+
+    return redirect(f"/single_book?id={id}")

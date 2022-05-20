@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update {{ bg_title }}</title>
+</head>
+<body>
+
+<form action="/single_book_update" method="POST">
+
+    <input type="hidden" name="id" value="{{ id }}"/>
+    <br/>
+
+    <label for="read_field">Четена?: </label>
+    {% if read == 0 %}
+    <input type="checkbox" id="read_field" name="read">
+    {% else %}
+    <input type="checkbox" id="read_field" name="read" checked="checked">
+    {% endif %}
+    <br/>
+
+    <label for="bg_title_field">Заглавие-бг: </label>
+    <input id="bg_title_field" name="bg_title" required=required value="{{ bg_title }}"/>
+    <br/>
+
+
+    <label for="eng_title_field">Заглавие-анг: </label>
+    <input id="eng_title_field" name="eng_title" value="{{ eng_title }}"/>
+    <br/>
+
+
+    <label for="author_field">Автор: </label>
+    <select id="author_field" name="author" required=required>
+        {% for author_info in list_with_authors %}
+            {% if author == author_info[0] %}
+                <option selected="selected" value= {{ author_info[0] }}> {{ author_info[1] }}</option>
+            {% else %}
+                <option value= {{ author_info[0] }}> {{ author_info[1] }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    <br/>
+
+    <label for="format_field">Формат: </label>
+    <select id="format_field" name="format" required=required>
+        {% for format_info in list_with_formats %}
+            {% if format == format_info[0] %}
+            <option selected="selected" value= {{ format_info[0] }}> {{ format_info[1] }}</option>
+            {% else %}
+            <option value= {{ format_info[0] }}> {{ format_info[1] }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    <br/>
+
+    <label for="location_field">Локация: </label>
+    <select id="location_field" name="location">
+    <option value="">Няма посочена локация </option>
+        {% for location_info in list_with_locations %}
+            {% if location == location_info[0] %}
+            <option selected="selected" value= {{ location_info[0] }}> {{ location_info[1] }}</option>
+            {% else %}
+            <option value= {{ location_info[0] }}> {{ location_info[1] }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    <br/>
+
+    <label for="information_field">Резюме</label>
+    <textarea id="information_field" name="info">{{ review }}</textarea>
+    <br/>
+
+    <label for="series_field"> Книгата принадлежи към поредицата: </label>
+    <select id="series_field" name="part_of_the_series">
+        <option value=""> Самостоятелна книга</option>
+        {% for series_info in list_with_related %}
+            {% if part_of_the_series == series_info[0] %}
+            <option selected="selected" value= {{ series_info[0] }}> {{ series_info[1] }}</option>
+            {% else %}
+            <option value= {{ series_info[0] }}> {{ series_info[1] }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+
+    <p>
+        <button type="submit">Update</button>
+    </p>
+
+</form>
+
+</body>
+</html>
