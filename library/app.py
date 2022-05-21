@@ -3,6 +3,7 @@ from flask import Flask
 from library.home_route import blueprint_home
 from library.wishlist_route import blueprint_wishlist
 from library.books_route import blueprint_books
+from library.authors_route import blueprint_authors
 
 
 def create_app() -> Flask:
@@ -11,5 +12,6 @@ def create_app() -> Flask:
     app.register_blueprint(blueprint_home)
     app.register_blueprint(blueprint_wishlist)
     app.register_blueprint(blueprint_books)
+    app.register_blueprint(blueprint_authors)
 
     return app
