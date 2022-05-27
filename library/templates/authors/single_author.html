@@ -7,10 +7,22 @@
 <body>
 
 <h1> Книги от {{ author_name }}</h1>
-
-{% for book in list_with_dict_with_authors_books %}
-    <a href="/single_book?id={{ book["book_id"] }}">{{ book["title"] }}</a> - part of {{ book["type_of_series"] }} -
-    {{ book["name_of_series"] }} </br>
-{% endfor %}
+<ol>
+    {% for book in list_with_dict_with_authors_books %}
+        <li><a href="/single_book?id={{ book["book_id"] }}">{{ book["title"] }}</a> - part
+            of {{ book["type_of_series"] }} -
+            {{ book["name_of_series"] }} </li><br/>
+    {% endfor %}
+</ol>
+<p>
+    {% if list_with_dict_with_all_series|length > 0 %}
+        <h3> Серии от {{ author_name }}: </h3>
+        <ol>
+            {% for series in list_with_dict_with_all_series %}
+                <li>{{ series["name_of_series"] }}</li> <br/>
+            {% endfor %}
+        </ol>
+    {% endif %}
+</p>
 </body>
 </html>

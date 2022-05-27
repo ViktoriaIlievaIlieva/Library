@@ -36,6 +36,19 @@ def single_author():
 
         list_with_dict_with_authors_books: list = single_authors_to_cursor.mappings().all()
 
+        series_to_cursor: CursorResult = connection.execute("""
+        SELECT DISTINCT Related.Name AS "name_of_series", Related.ID
+        FROM Books
+        JOIN Authors ON Books.AuthorID = AuthorID
+        JOIN Related ON Books.RelatedID = Related.ID
+        WHERE AuthorID = ?
+        """, id)
+
+        list_with_dict_with_all_series = series_to_cursor.mappings().all()
+
         return render_template("authors/single_author.html", list_with_dict_with_authors_books=list_with_dict_with_authors_books,
-                               author_id=id, author_name=author_name)
+                               author_id=id, author_name=author_name, list_with_dict_with_all_series=list_with_dict_with_all_series)
+
+
+
 

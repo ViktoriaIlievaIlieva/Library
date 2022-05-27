@@ -6,10 +6,10 @@
 </head>
 <body>
 <h1> ♥ Автори ♥ </h1>
-
+<ol>
 {% for author in list_with_dict_with_authors %}
-    <a href="/single_author?id={{ author["ID"]}}&author_name={{ author["Name"] }}">{{ author["Name"] }}</a>
+    <li><a href="/single_author?id={{ author["ID"]}}&author_name={{ author["Name"] }}">{{ author["Name"] }}</a></li>
 {%  endfor %}
-
+</ol>
 </body>
 </html>
