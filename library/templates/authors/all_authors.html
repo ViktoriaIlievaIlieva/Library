@@ -8,7 +8,8 @@
 <h1> ♥ Автори ♥ </h1>
 <ol>
 {% for author in list_with_dict_with_authors %}
-    <li><a href="/single_author?id={{ author["ID"]}}&author_name={{ author["Name"] }}">{{ author["Name"] }}</a></li>
+    <li><a href="/single_author?id={{ author["ID"]}}&author_name={{ author["Name"] }}">{{ author["Name"] }} -
+    <a href="/single_author_edit?id={{ author["ID"]}}"> Редактирай </a> </a></li>
 {%  endfor %}
 </ol>
 </body>

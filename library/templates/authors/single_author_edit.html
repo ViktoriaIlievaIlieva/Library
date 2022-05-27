@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Edit {{ dict_with_author_data ["Name"] }}</title>
+</head>
+<body>
+
+<form action="/single_author_edit" method="post">
+    <input type="hidden" name="id" value="{{ dict_with_author_data["ID"]}}"/>
+    <label for="name_field">Name</label>
+    <input id="name_field" name="author_name" value="{{ dict_with_author_data["Name"] }}"/>
+
+    <button type="submit"> Промени</button>
+
+</form>
+
+</body>
+</html>

@@ -50,5 +50,30 @@ def single_author():
                                author_id=id, author_name=author_name, list_with_dict_with_all_series=list_with_dict_with_all_series)
 
 
+@blueprint_authors.route("/single_author_edit", methods=["GET","POST"])
+def single_author_edit():
+    if request.method == "GET":
+        id= request.args["id"]
+        with get_connection() as connection:
+            author_data_cursor: CursorResult = connection.execute("""
+            SELECT *
+            FROM Authors
+            WHERE id = ?
+            """, id)
 
+            dict_with_author_data = author_data_cursor.mappings().all()
+
+            return render_template("authors/single_author_edit.html", dict_with_author_data=dict_with_author_data[0])
+
+    else:
+        id = request.form["id"]
+        author_name = request.form["author_name"]
+        with get_connection() as connection:
+            connection.execute("""
+            UPDATE Authors
+            SET Name = ?
+            WHERE ID = ?
+            """, author_name, id)
+
+        return redirect(f"/single_author?id={id}&author_name={author_name}")
 
