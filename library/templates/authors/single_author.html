@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ author_name }}</title>
+</head>
+<body>
+
+<h1> Книги от {{ author_name }}</h1>
+
+{% for book in list_with_dict_with_authors_books %}
+    <a href="/single_book?id={{ book["book_id"] }}">{{ book["title"] }}</a> - part of {{ book["type_of_series"] }} -
+    {{ book["name_of_series"] }} </br>
+{% endfor %}
+</body>
+</html>
