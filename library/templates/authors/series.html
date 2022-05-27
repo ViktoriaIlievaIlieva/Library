@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ dict_with_series_info["series_name"] }}</title>
+</head>
+<body>
+<h1> {{ dict_with_series_info["series_name"] }}</h1>
+
+{{ dict_with_series_info["series_type"] }}
+
+
+<p>
+<h3> Книги в серията:</h3> <br/>
+{% for book in books_in_series %}
+    <a href="/single_book?id={{ book["book_id"] }}">{{ book["title"] }}</a><br/>
+{% endfor %}
+
+</p>
+
+{{ dict_with_series_info["series_description"] }}<br/>
+</body>
+</html>

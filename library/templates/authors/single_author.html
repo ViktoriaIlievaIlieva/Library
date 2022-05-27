@@ -11,7 +11,7 @@
     {% for book in list_with_dict_with_authors_books %}
         <li><a href="/single_book?id={{ book["book_id"] }}">{{ book["title"] }}</a> - part
             of {{ book["type_of_series"] }} -
-            {{ book["name_of_series"] }} </li><br/>
+            <a href="/series?id={{ book["series_id"] }}">{{ book["name_of_series"] }}</a></li><br/>
     {% endfor %}
 </ol>
 <p>
@@ -19,7 +19,7 @@
         <h3> Серии от {{ author_name }}: </h3>
         <ol>
             {% for series in list_with_dict_with_all_series %}
-                <li>{{ series["name_of_series"] }}</li> <br/>
+                <li><a href="/series?id={{ series["series_id"] }}">{{ series["name_of_series"] }}</a></li> <br/>
             {% endfor %}
         </ol>
     {% endif %}
