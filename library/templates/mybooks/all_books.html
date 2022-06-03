@@ -36,11 +36,11 @@
 
 
     <tbody>
-    {% for book in books_info %}
+    {% for book in list_with_dict_with_books_info %}
         <tr>
-            <td><a href="/single_book?id={{ book["id"] }}">{{ book["bg_name"] }}</a></td>
-            <td>{{ book["eng_name"] }}</td>
-            <td>{{ book["author"] }}</td>
+            <td><a href="/single_book?id={{ book["book_id"] }}">{{ book["bg_title"] }}</a></td>
+            <td>{{ book["eng_title"] }}</td>
+            <td><a href="/single_author?id={{ book["author_id"] }}"> {{ book["author_name"] }}</a></td>
             <td>{{ book["read"] }}</td>
         </tr>
     {% endfor %}
