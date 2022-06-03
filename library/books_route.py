@@ -8,16 +8,22 @@ blueprint_books = Blueprint("Books", __name__)
 @blueprint_books.route("/mybooks")
 def my_books():
     with get_connection() as connection:
-        cursor_to_result: CursorResult = connection.execute("""
+        all_books_cursor: CursorResult = connection.execute("""
        SELECT Books.NameBG AS "bg_title", Books.NameENG AS "eng_title", Authors.Name AS "author_name",
         Books.AuthorID AS "author_id", IIF(Books.Read, "прочетена", "нечетена") AS "read", Books.ID AS "book_id"
        FROM Books
        JOIN Authors ON Authors.ID = Books.AuthorID 
        """)
 
-        books_info: list[dict] = cursor_to_result.mappings().all()
+        books_info: list[dict] = all_books_cursor.mappings().all()
 
-    return render_template("mybooks/all_books.html", list_with_dict_with_books_info=books_info)
+        count_cursor: CursorResult = connection.execute("""
+        SELECT COUNT(*) FROM Books
+        """)
+
+        count = count_cursor.fetchone()
+
+    return render_template("mybooks/all_books.html", list_with_dict_with_books_info=books_info, count=count[0])
 
 
 @blueprint_books.route("/single_book")
