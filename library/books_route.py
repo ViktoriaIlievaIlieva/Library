@@ -44,10 +44,18 @@ def single_book():
 
         single_book_info: tuple = single_book_cursor.fetchone()
 
+        author_id_cursor: CursorResult = connection.execute("""
+        SELECT Books.AuthorID
+        FROM Books
+        WHERE id=?
+        """, id)
+
+        author_id = author_id_cursor.fetchone()
+
     return render_template("mybooks/single_book.html", bg_title=single_book_info[0], eng_title=single_book_info[1],
                            author=single_book_info[2], format=single_book_info[3], location=single_book_info[4],
                            read=single_book_info[5], review=single_book_info[6], series=single_book_info[7],
-                           other_books_in_series=single_book_info[8], id=id)
+                           other_books_in_series=single_book_info[8], id=id, author_id=author_id[0])
 
 
 @blueprint_books.route("/single_book_update", methods=["GET", "POST"])
