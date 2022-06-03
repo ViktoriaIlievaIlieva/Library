@@ -227,3 +227,15 @@ def add_new_book():
                 """, bg_title, eng_title, author_id, format, related_series_id, location, read_status, info).lastrowid
 
         return redirect(f"/single_book?id={new_book_id}")
+
+
+@blueprint_books.route("/delete_single_book")
+def delete_single_book():
+    id = request.args["id"]
+    with get_connection() as connection:
+        connection.execute("""
+        DELETE FROM Books
+        WHERE ID=?
+        """, id)
+
+    return redirect("/mybooks")
