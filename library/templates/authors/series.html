@@ -9,15 +9,16 @@
 
 {{ dict_with_series_info["series_type"] }}
 
-
+<h3> Книги в серията:</h3>
 <p>
-<h3> Книги в серията:</h3> <br/>
-{% for book in books_in_series %}
-    <a href="/single_book?id={{ book["book_id"] }}">{{ book["title"] }}</a><br/>
-{% endfor %}
-
+    {% for book in books_in_series %}
+        <a href="/single_book?id={{ book["book_id"] }}">{{ book["title"] }}</a><br/>
+    {% endfor %}
 </p>
 
 {{ dict_with_series_info["series_description"] }}<br/>
+<p>
+    <a style="margin-right: 25px" href="/">Начало</a>
+</p>
 </body>
 </html>
