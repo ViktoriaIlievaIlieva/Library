@@ -10,7 +10,7 @@ def my_books():
     with get_connection() as connection:
         all_books_cursor: CursorResult = connection.execute("""
        SELECT Books.NameBG AS "bg_title", Books.NameENG AS "eng_title", Authors.Name AS "author_name",
-        Books.AuthorID AS "author_id", IIF(Books.Read, "прочетена", "нечетена") AS "read", Books.ID AS "book_id"
+        Books.AuthorID AS "author_id", IIF(Books.Read, 'прочетена','нечетена') AS "read", Books.ID AS "book_id"
        FROM Books
        JOIN Authors ON Authors.ID = Books.AuthorID 
        """)
@@ -21,7 +21,7 @@ def my_books():
         SELECT COUNT(*) FROM Books
         """)
 
-        count = count_cursor.fetchone()
+        count: tuple = count_cursor.fetchone()
 
     return render_template("mybooks/all_books.html", list_with_dict_with_books_info=books_info, count=count[0])
 
@@ -32,7 +32,7 @@ def single_book():
     with get_connection() as connection:
         single_book_cursor: CursorResult = connection.execute("""
         SELECT Books.NameBG , Books.NameENG, Authors.Name, Formats.Format, Locations.Location, 
-        IIF(Books.Read, "прочетена", "нечетена"), Books.Info, RelationTypes.Type||" - "||Related.Name, Related.Description
+        IIF(Books.Read, 'прочетена', 'нечетена'), Books.Info, RelationTypes.Type||' - '||Related.Name, Related.Description
         FROM Books
         JOIN Authors ON Authors.ID = Books.AuthorID 
         JOIN Formats ON Formats.ID = Books.FormatID
@@ -70,44 +70,44 @@ def single_book_update():
             FROM Authors
             """)
 
-            tuple_list_authors: list = authors_cursor.fetchall()
+            list_authors: list[dict] = authors_cursor.mappings().all()
 
             formats_cursor: CursorResult = connection.execute("""
             SELECT * 
             FROM Formats
             """)
 
-            tuple_list_formats: list = formats_cursor.fetchall()
+            list_formats: list[dict] = formats_cursor.mappings().all()
 
             locations_cursor: CursorResult = connection.execute("""
             SELECT * 
             FROM Locations
             """)
 
-            tuple_list_locations: list = locations_cursor.fetchall()
+            list_locations: list[dict] = locations_cursor.mappings().all()
 
             series_type_cursor: CursorResult = connection.execute("""
             SELECT *
             FROM RelationTypes
             """)
 
-            tuple_list_series_types: list = series_type_cursor.fetchall()
+            list_series_types: list[dict] = series_type_cursor.mappings().all()
 
             related_cursor: CursorResult = connection.execute("""
                         SELECT ID, Name
                         FROM Related
                         """)
 
-            tuple_list_related: list = related_cursor.fetchall()
+            list_related: list[dict] = related_cursor.mappings().all()
 
         return render_template("mybooks/single_book_update.html", bg_title=single_book_info[0],
                                eng_title=single_book_info[1],
                                author=single_book_info[2], format=single_book_info[3], location=single_book_info[4],
                                read=single_book_info[5], review=single_book_info[6],
                                part_of_the_series=single_book_info[7], id=id,
-                               list_with_authors=tuple_list_authors, list_with_formats=tuple_list_formats,
-                               list_with_locations=tuple_list_locations,
-                               list_with_series_types=tuple_list_series_types, list_with_related=tuple_list_related)
+                               list_with_authors=list_authors, list_with_formats=list_formats,
+                               list_with_locations=list_locations,
+                               list_with_series_types=list_series_types, list_with_related=list_related)
 
     else:
         id = request.form["id"]
@@ -144,28 +144,28 @@ def add_new_book():
                    FROM Authors
                    """)
 
-            list_of_dict_with_authors: list = authors_cursor.mappings().all()
+            list_with_authors: list[dict] = authors_cursor.mappings().all()
 
             formats_cursor: CursorResult = connection.execute("""
                    SELECT * 
                    FROM Formats
                    """)
 
-            list_of_dict_with_formats: list = formats_cursor.mappings().all()
+            list_with_formats: list[dict] = formats_cursor.mappings().all()
 
             locations_cursor: CursorResult = connection.execute("""
                    SELECT * 
                    FROM Locations
                    """)
 
-            list_of_dict_with_locations: list = locations_cursor.mappings().all()
+            list_with_locations: list[dict] = locations_cursor.mappings().all()
 
             series_type_cursor: CursorResult = connection.execute("""
                    SELECT *
                    FROM RelationTypes
                    """)
 
-            list_of_dict_with_series_types: list = series_type_cursor.mappings().all()
+            list_with_series_types: list[dict] = series_type_cursor.mappings().all()
 
             related_series_cursor: CursorResult = connection.execute("""
                                SELECT Related.ID, Related.Name, Related.Description, RelationTypes.Type
@@ -173,14 +173,14 @@ def add_new_book():
                                JOIN RelationTypes ON RelationTypes.ID = Related.RelationTypeID
                                """)
 
-            list_of_dict_with_related: list = related_series_cursor.mappings().all()
+            list_with_related: list[dict] = related_series_cursor.mappings().all()
 
         return render_template("mybooks/add_new_book_to_library.html",
-                               list_of_dict_with_authors=list_of_dict_with_authors,
-                               list_of_dict_with_formats=list_of_dict_with_formats,
-                               list_of_dict_with_locations=list_of_dict_with_locations,
-                               list_of_dict_with_series_types=list_of_dict_with_series_types,
-                               list_of_dict_with_related=list_of_dict_with_related)
+                               list_of_dict_with_authors=list_with_authors,
+                               list_of_dict_with_formats=list_with_formats,
+                               list_of_dict_with_locations=list_with_locations,
+                               list_of_dict_with_series_types=list_with_series_types,
+                               list_of_dict_with_related=list_with_related)
 
     else:
         bg_title: str = request.form["bg_title"]

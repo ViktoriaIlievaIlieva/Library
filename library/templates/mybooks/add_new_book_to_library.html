@@ -55,7 +55,7 @@
     <label for="description_new_related_series_field"> Описание нова поредица: </label>
     <input id="description_new_related_series_field" name="description_new_related_series"><br/>
 
-     <label for="series_type_field"> Тип книга: </label>
+    <label for="series_type_field"> Тип книга: </label>
     <select id="series_type_field" name="series_type">
         {% for series_type in list_of_dict_with_series_types %}
             <option value="{{ series_type["ID"] }}"> {{ series_type["Type"] }}</option>
@@ -65,7 +65,7 @@
     <label for="read_status_field"> Статус на четене: </label>
     <input id="read_status_field" type="checkbox" name="read_status"><br/>
 
-    <button type="submit"> Запиши нова книга </button>
+    <button type="submit"> Запиши нова книга</button>
 </form>
 </body>
 </html>

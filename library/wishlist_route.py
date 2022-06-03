@@ -12,33 +12,22 @@ def wishlist_add():
     else:
         book = request.form["book"]
         author = request.form["author"]
-        connection = get_connection()
-        connection.execute("""
-        INSERT INTO "Wishlists"(Name, Author)
-        VALUES (?,?)
-        """, book, author)
-
-    connection.close()
+        with get_connection() as connection:
+            connection.execute("""
+            INSERT INTO "Wishlists"(Name, Author)
+            VALUES (?,?)
+            """, book, author)
 
     return redirect("/wishlist")
 
+
 @blueprint_wishlist.route("/wishlist")
 def wishlist():
-    connection = get_connection()
+    with get_connection() as connection:
+        wishlist_cursor: CursorResult = connection.execute("""
+        SELECT * 
+        FROM Wishlists
+        """)
+        all_wished_books: list[dict] = wishlist_cursor.mappings().all()
 
-    cursor_to_result: CursorResult = connection.execute("""
-    SELECT * 
-    FROM Wishlists
-    """)
-    all_wished_books: list[tuple] = cursor_to_result.fetchall()
-    connection.close()
-
-    list_with_dict_for_books_and_authors: list = []
-
-    for book_info in all_wished_books:
-        book = book_info[1]
-        author = book_info[2]
-        book_info: dict = {"book_title": book, "book_author": author}
-        list_with_dict_for_books_and_authors.append(book_info)
-
-    return render_template("wishlist/wishlist.html", list_with_dict_book_info=list_with_dict_for_books_and_authors)
+    return render_template("wishlist/wishlist.html", list_with_dict_book_info=all_wished_books)

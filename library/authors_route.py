@@ -13,17 +13,15 @@ def all_authors():
         FROM Authors
         """)
 
-        list_with_authors: list = all_authors_to_cursor.mappings().all()
+        authors: list[dict] = all_authors_to_cursor.mappings().all()
 
-        return render_template("authors/all_authors.html", list_with_dict_with_authors=list_with_authors)
+        return render_template("authors/all_authors.html", list_with_dict_with_authors=authors)
 
 
 @blueprint_authors.route("/single_author")
 def single_author():
     id = request.args["id"]
-    author_name = request.args["author_name"]
     with get_connection() as connection:
-
         single_authors_to_cursor: CursorResult = connection.execute("""
         SELECT Books.NameBG AS "title", Books.ID AS "book_id", Related.Name AS "name_of_series", Related.ID AS "series_id",
         RelationTypes.Type AS "type_of_series"
@@ -34,7 +32,15 @@ def single_author():
         WHERE AuthorID = ?
         """, id)
 
-        list_with_dict_with_authors_books: list = single_authors_to_cursor.mappings().all()
+        authors_books: list[dict] = single_authors_to_cursor.mappings().all()
+
+        author_name_cursor: CursorResult = connection.execute("""
+        SELECT Authors.Name 
+        FROM Authors
+        WHERE ID=?
+        """, id)
+
+        author_name: tuple = author_name_cursor.fetchone()
 
         series_to_cursor: CursorResult = connection.execute("""
         SELECT DISTINCT Related.Name AS "name_of_series", Related.ID AS "series_id"
@@ -44,16 +50,16 @@ def single_author():
         WHERE AuthorID = ?
         """, id)
 
-        list_with_dict_with_all_series = series_to_cursor.mappings().all()
+        all_series: list[dict] = series_to_cursor.mappings().all()
 
-        return render_template("authors/single_author.html", list_with_dict_with_authors_books=list_with_dict_with_authors_books,
-                               author_id=id, author_name=author_name, list_with_dict_with_all_series=list_with_dict_with_all_series)
+        return render_template("authors/single_author.html", list_with_dict_with_authors_books=authors_books,
+                               author_id=id, author_name=author_name[0], list_with_dict_with_all_series=all_series)
 
 
 @blueprint_authors.route("/single_author_edit", methods=["GET", "POST"])
 def single_author_edit():
     if request.method == "GET":
-        id= request.args["id"]
+        id = request.args["id"]
         with get_connection() as connection:
             author_data_cursor: CursorResult = connection.execute("""
             SELECT *
@@ -61,9 +67,9 @@ def single_author_edit():
             WHERE id = ?
             """, id)
 
-            list_with_dict_with_author_data = author_data_cursor.mappings().all()
+            author_data: list[dict] = author_data_cursor.mappings().all()
 
-            return render_template("authors/single_author_edit.html", dict_with_author_data=list_with_dict_with_author_data[0])
+            return render_template("authors/single_author_edit.html", dict_with_author_data=author_data[0])
 
     else:
         id = request.form["id"]
@@ -90,7 +96,7 @@ def series():
         WHERE Related.ID = ?
         """, series_id)
 
-        list_with_dict_with_series_info = series_to_cursor.mappings().all()
+        series_info: list[dict] = series_to_cursor.mappings().all()
 
         books_in_series_to_cursor: CursorResult = connection.execute("""
         SELECT Books.NameBG AS "title", Books.ID AS "book_id"
@@ -100,6 +106,5 @@ def series():
 
         books_in_series: list[dict] = books_in_series_to_cursor.mappings().all()
 
-        return render_template("authors/series.html", dict_with_series_info=list_with_dict_with_series_info[0],
+        return render_template("authors/series.html", dict_with_series_info=series_info[0],
                                books_in_series=books_in_series)
-

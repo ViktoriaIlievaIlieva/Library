@@ -13,9 +13,9 @@
 
     <label for="read_field">Четена?: </label>
     {% if read == 0 %}
-    <input type="checkbox" id="read_field" name="read">
+        <input type="checkbox" id="read_field" name="read">
     {% else %}
-    <input type="checkbox" id="read_field" name="read" checked="checked">
+        <input type="checkbox" id="read_field" name="read" checked="checked">
     {% endif %}
     <br/>
 
@@ -32,10 +32,10 @@
     <label for="author_field">Автор: </label>
     <select id="author_field" name="author" required=required>
         {% for author_info in list_with_authors %}
-            {% if author == author_info[0] %}
-                <option selected="selected" value= {{ author_info[0] }}> {{ author_info[1] }}</option>
+            {% if author == author_info["ID"] %}
+                <option selected="selected" value="{{ author_info["ID"] }}"> {{ author_info["Name"] }}</option>
             {% else %}
-                <option value= {{ author_info[0] }}> {{ author_info[1] }}</option>
+                <option value="{{ author_info["ID"] }}"> {{ author_info["Name"] }}</option>
             {% endif %}
         {% endfor %}
     </select>
@@ -44,10 +44,10 @@
     <label for="format_field">Формат: </label>
     <select id="format_field" name="format" required=required>
         {% for format_info in list_with_formats %}
-            {% if format == format_info[0] %}
-            <option selected="selected" value= {{ format_info[0] }}> {{ format_info[1] }}</option>
+            {% if format == format_info["ID"] %}
+                <option selected="selected" value="{{ format_info["ID"] }}"> {{ format_info["Format"] }}</option>
             {% else %}
-            <option value= {{ format_info[0] }}> {{ format_info[1] }}</option>
+                <option value="{{ format_info["ID"] }}"> {{ format_info["Format"] }}</option>
             {% endif %}
         {% endfor %}
     </select>
@@ -55,12 +55,12 @@
 
     <label for="location_field">Локация: </label>
     <select id="location_field" name="location">
-    <option value="">Няма посочена локация </option>
+        <option value="">Няма посочена локация</option>
         {% for location_info in list_with_locations %}
-            {% if location == location_info[0] %}
-            <option selected="selected" value= {{ location_info[0] }}> {{ location_info[1] }}</option>
+            {% if location == location_info["ID"] %}
+                <option selected="selected" value="{{ location_info["ID"] }}"> {{ location_info["Location"] }}</option>
             {% else %}
-            <option value= {{ location_info[0] }}> {{ location_info[1] }}</option>
+                <option value="{{ location_info["ID"] }}"> {{ location_info["Location"] }}</option>
             {% endif %}
         {% endfor %}
     </select>
@@ -74,10 +74,10 @@
     <select id="series_field" name="part_of_the_series">
         <option value=""> Самостоятелна книга</option>
         {% for series_info in list_with_related %}
-            {% if part_of_the_series == series_info[0] %}
-            <option selected="selected" value= {{ series_info[0] }}> {{ series_info[1] }}</option>
+            {% if part_of_the_series == series_info["ID"] %}
+                <option selected="selected" value="{{ series_info["ID"] }}"> {{ series_info["Name"] }}</option>
             {% else %}
-            <option value= {{ series_info[0] }}> {{ series_info[1] }}</option>
+                <option value="{{ series_info["ID"] }}"> {{ series_info["Name"] }}</option>
             {% endif %}
         {% endfor %}
     </select>
