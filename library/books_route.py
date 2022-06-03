@@ -137,3 +137,99 @@ def single_book_update():
             """, bg_title, eng_title, author, format, location, part_of_the_series, info, read, id)
 
     return redirect(f"/single_book?id={id}")
+
+
+@blueprint_books.route("/add_new_book", methods=["GET", "POST"])
+def add_new_book():
+    if request.method == "GET":
+
+        with get_connection() as connection:
+
+            authors_cursor: CursorResult = connection.execute("""
+                   SELECT * 
+                   FROM Authors
+                   """)
+
+            list_of_dict_with_authors: list = authors_cursor.mappings().all()
+
+            formats_cursor: CursorResult = connection.execute("""
+                   SELECT * 
+                   FROM Formats
+                   """)
+
+            list_of_dict_with_formats: list = formats_cursor.mappings().all()
+
+            locations_cursor: CursorResult = connection.execute("""
+                   SELECT * 
+                   FROM Locations
+                   """)
+
+            list_of_dict_with_locations: list = locations_cursor.mappings().all()
+
+            series_type_cursor: CursorResult = connection.execute("""
+                   SELECT *
+                   FROM RelationTypes
+                   """)
+
+            list_of_dict_with_series_types: list = series_type_cursor.mappings().all()
+
+            related_series_cursor: CursorResult = connection.execute("""
+                               SELECT Related.ID, Related.Name, Related.Description, RelationTypes.Type
+                               FROM Related
+                               JOIN RelationTypes ON RelationTypes.ID = Related.RelationTypeID
+                               """)
+
+            list_of_dict_with_related: list = related_series_cursor.mappings().all()
+
+        return render_template("mybooks/add_new_book_to_library.html",
+                               list_of_dict_with_authors=list_of_dict_with_authors,
+                               list_of_dict_with_formats=list_of_dict_with_formats,
+                               list_of_dict_with_locations=list_of_dict_with_locations,
+                               list_of_dict_with_series_types=list_of_dict_with_series_types,
+                               list_of_dict_with_related=list_of_dict_with_related)
+
+    else:
+        bg_title: str = request.form["bg_title"]
+        eng_title: str = request.form["eng_title"]
+        format: str = request.form["format"]
+        location: str = request.form["location"]
+        author_of_list: str = request.form["author_of_list"]
+        new_author: str = request.form["new_author"]
+        related_series_list: str = request.form["related_series"]
+        new_series_name: str = request.form["name_new_related_series"]
+        new_series_description: str = request.form["description_new_related_series"]
+        type_series: str = request.form["series_type"]
+        info: str = request.form["info"]
+
+        if author_of_list == "":
+            with get_connection() as connection:
+                author_id = connection.execute("""
+                INSERT INTO "Authors"("Name")
+                VALUES (?)
+                """, new_author).lastrowid
+        else:
+            author_id = author_of_list
+
+        if related_series_list == "single_book":
+            related_series_id = None
+        elif related_series_list == "":
+            with get_connection() as connection:
+                related_series_id = connection.execute("""
+                INSERT INTO "Related"("Name", "RelationTypeID", "Description")
+                VALUES (?, ?, ?)
+                """, new_series_name, type_series, new_series_description).lastrowid
+        else:
+            related_series_id = related_series_list
+
+        if "read_status" in request.form:
+            read_status = 1
+        else:
+            read_status = 0
+
+        with get_connection() as connection:
+            new_book_id = connection.execute("""
+                INSERT INTO Books (NameBG, NameENG, AuthorID, FormatID, RelatedID, LocationID, Read, Info)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """, bg_title, eng_title, author_id, format, related_series_id, location, read_status, info).lastrowid
+
+        return redirect(f"/single_book?id={new_book_id}")
