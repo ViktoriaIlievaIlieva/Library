@@ -29,8 +29,8 @@ def single_author():
         RelationTypes.Type AS "type_of_series"
         FROM Books
         JOIN Authors ON Books.AuthorID = Authors.ID
-        JOIN Related ON Books.RelatedID = Related.ID
-        JOIN RelationTypes ON RelationTypes.ID = Related.RelationTypeID
+        LEFT JOIN Related ON Books.RelatedID = Related.ID
+        LEFT JOIN RelationTypes ON RelationTypes.ID = Related.RelationTypeID
         WHERE AuthorID = ?
         """, id)
 

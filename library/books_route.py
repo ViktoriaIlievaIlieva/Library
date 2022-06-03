@@ -31,8 +31,8 @@ def single_book():
         JOIN Authors ON Authors.ID = Books.AuthorID 
         JOIN Formats ON Formats.ID = Books.FormatID
         JOIN Locations ON Locations.ID = Books.LocationID
-        JOIN Related ON Related.ID = Books.RelatedID
-        JOIN RelationTypes ON RelationTypes.ID = Related.RelationTypeID
+        LEFT JOIN Related ON Related.ID = Books.RelatedID
+        LEFT JOIN RelationTypes ON RelationTypes.ID = Related.RelationTypeID
         WHERE Books.ID = ?
             """, id)
 

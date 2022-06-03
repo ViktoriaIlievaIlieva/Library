@@ -9,9 +9,14 @@
 <h1> Книги от {{ author_name }}</h1>
 <ol>
     {% for book in list_with_dict_with_authors_books %}
-        <li><a href="/single_book?id={{ book["book_id"] }}">{{ book["title"] }}</a> - part
-            of {{ book["type_of_series"] }} -
-            <a href="/series?id={{ book["series_id"] }}">{{ book["name_of_series"] }}</a></li><br/>
+        <li>
+            <a href="/single_book?id={{ book["book_id"] }}">{{ book["title"] }}</a>
+            {% if book ["series_id"] and book ["name_of_series"] %}
+                - part of {{ book["type_of_series"] }} -
+                <a href="/series?id={{ book["series_id"] }}">{{ book["name_of_series"] }}</a>
+            {% endif %}
+
+        </li><br/>
     {% endfor %}
 </ol>
 <p>
