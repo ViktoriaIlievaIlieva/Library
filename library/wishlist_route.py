@@ -31,3 +31,15 @@ def wishlist():
         all_wished_books: list[dict] = wishlist_cursor.mappings().all()
 
     return render_template("wishlist/wishlist.html", list_with_dict_book_info=all_wished_books)
+
+
+@blueprint_wishlist.route("/delete_wishlist_book")
+def delete_wishlist_book():
+    id = request.args["id"]
+    with get_connection() as connection:
+        connection.execute("""
+        DELETE FROM Wishlists
+        WHERE ID=?
+        """, id)
+
+    return redirect("/wishlist")

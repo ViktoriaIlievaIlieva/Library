@@ -37,6 +37,7 @@
         <tr>
             <td>{{ book_dict["Name"] }}</td>
             <td>{{ book_dict["Author"] }}</td>
+            <td><a href="/delete_wishlist_book?id={{ book_dict["ID"] }}">Изтрий</a></td>
         </tr>
     {% endfor %}
     </tbody>
