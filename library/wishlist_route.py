@@ -43,3 +43,34 @@ def delete_wishlist_book():
         """, id)
 
     return redirect("/wishlist")
+
+
+@blueprint_wishlist.route("/edit_wishlist", methods=["GET", "POST"])
+def edit_wishlist():
+    if request.method == "GET":
+        id = request.args["id"]
+        with get_connection() as connection:
+            wishlist_edit_cursor: CursorResult = connection.execute("""
+            SELECT Name, Author
+            FROM Wishlists
+            WHERE ID=?
+            """, id)
+
+            list_with_wishlist_books: list[dict] = wishlist_edit_cursor.mappings().all()
+
+        return render_template("wishlist/wishlist_edit.html", dict_wishlist_book=list_with_wishlist_books[0],
+                               wishlist_id=id)
+
+    else:
+        wishlist_id = request.form["id"]
+        title = request.form["title"]
+        author = request.form["author"]
+
+        with get_connection() as connection:
+            connection.execute("""
+            UPDATE Wishlists
+            SET Name=?, Author=?
+            WHERE ID=?
+            """, title, author, wishlist_id)
+
+        return redirect("/wishlist")

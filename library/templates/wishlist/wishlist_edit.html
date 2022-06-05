@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирай</title>
+</head>
+<body>
+<form action="/edit_wishlist" method="POST">
+    <input type="hidden" name="id" value="{{ wishlist_id }}"/>
+
+    <label for="name_field">Заглавие</label>
+    <input id="name_field" name="title" value="{{ dict_wishlist_book["Name"] }}"><br/>
+
+    <label for="author_field">Автор</label>
+    <input id="author_field" name="author" value="{{ dict_wishlist_book["Author"] }}">
+
+    <button type="submit">Промени</button>
+</form>
+</body>
+</html>
