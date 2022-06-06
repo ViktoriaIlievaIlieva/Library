@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добави описание за серия</title>
+</head>
+<body>
+<h1>{{ series_name }}</h1>
+
+<form action="/redact_series_to_add_a_book" method="POST">
+    <input type="hidden" name="series_id" value="{{ series_id }}">
+    <input type="hidden" name="series_name" value="{{ series_name }}">
+
+    <label for="description_series_field">Описания на поредица</label>
+    <textarea id="description_series_field" name="description_series">{{ series_description }}</textarea>
+
+    <button type="submit">Редактирай описанието</button>
+</form>
+
+</body>
+</html>

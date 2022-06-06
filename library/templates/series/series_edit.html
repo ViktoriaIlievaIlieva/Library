@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирай информация за поредица</title>
+</head>
+<body>
+<form action="/series_edit" method="POST">
+    <input type="hidden" name="series_id" value="{{ id }}">
+
+    <label for="name_field">Име: </label>
+    <input id="name_field" name="name" value="{{ dict_with_series_info["name"] }}">
+
+    <label for="type_of_series_field">Тип серия</label>
+    <select id="type_of_series_field" name="type_of_series" required="required">
+        {% for series_type in list_with_dicts_with_type_of_series %}
+            {% if series_type["ID"] == dict_with_series_info["series_type_id"] %}
+                <option selected="selected"
+                        value="{{ dict_with_series_info["series_type_id"] }}">{{ dict_with_series_info["type_series"] }}</option>
+            {% else %}
+                <option value="{{ series_type["ID"] }}"> {{ series_type["Name"] }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+
+    <p>
+    <label for="series_description_field">Описание</label>
+    <textarea id="series_description_field" name="series_description"> {{ dict_with_series_info["description"] }}"</textarea>
+    </p>
+    <button type="submit">Запази промените</button>
+
+
+</form>
+</body>
+</html>

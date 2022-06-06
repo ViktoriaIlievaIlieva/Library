@@ -6,10 +6,12 @@
 </head>
 <body>
 <h1>{{ bg_title }}</h1>
-
 <p>
     <a style="margin-right: 10px" href="/single_book_update?id={{ id }}">Редактирай</a>
-    <a href="/delete_single_book?id={{ id }}">Изтрий</a>
+    <a style="margin-right: 10px" href="/delete_single_book?id={{ id }}">Изтрий</a>
+    <br/>
+    Добави книгата към описанието на поредицата:
+    <a href="/redact_series_to_add_a_book?id={{ series_id }}">Редактирай описание на поредица </a>
 </p>
 
 Книга: {{ bg_title }}/{{ eng_title }}<br/>

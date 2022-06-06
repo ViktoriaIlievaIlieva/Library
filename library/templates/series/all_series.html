@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Поредици</title>
+</head>
+<body>
+{% for series in list_with_dict_with_series_info %}
+    <p>
+        <a href="/series?id={{ series["series_id"] }}">{{ series["series_name"] }}</a>
+        -
+        <a href="/single_author?id={{ series["author_id"] }}">{{ series["author_name"] }}</a>
+        -
+        <a href="/series_edit?id={{ series["series_id"] }}">Редактирай</a>
+        -
+        <a href="/delete_series?id={{ series["series_id"] }}">Изтрий</a><br/>
+        -
+        {{ series["type_of_series"] }}<br/>
+        -
+        {{ series["series_description"] }}
+    </p>
+{% endfor %}
+
+<a href="/">Начало</a>
+
+</body>
+</html>
