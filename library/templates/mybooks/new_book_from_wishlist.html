@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Нова книга</title>
+</head>
+<body>
+<form action="/wishlist_bought" method="POST">
+    <label for=bg_title_field> Заглавие (бг): </label>
+    <input id="bg_title_field" name="bg_title" required="required" value="{{ title_new_book }}"><br/>
+
+    <label for="eng_title_field">Заглавие (анг): </label>
+    <input id="eng_title_field" name="eng_title"><br/>
+
+    <label for="author_field"> Автор от списък: </label>
+    <select id="author_field" name="author_of_list">
+        <option value=""> Нов автор</option>
+        {% for author in list_of_dict_with_authors %}
+            <option value="{{ author["ID"] }}">{{ author["Name"] }}</option>
+        {% endfor %}
+    </select><br/>
+
+    <label for="new_author_field"> Нов автор: </label>
+    <input id="new_author_field" name="new_author"><br/>
+
+    <label for="format_field"> Формат: </label>
+    <select id="format_field" name="format">
+        {% for format in list_of_dict_with_formats %}
+            <option value="{{ format["ID"] }}">{{ format["Format"] }}</option>
+        {% endfor %}
+    </select><br/>
+
+    <label for="location_field"> Локация: </label>
+    <select id="location_field" name="location">
+        {% for location in list_of_dict_with_locations %}
+            <option value="{{ location["ID"] }}"> {{ location["Location"] }}</option>
+        {% endfor %}
+    </select><br/>
+
+    <label for="info_field">Резюме: </label>
+    <textarea id="info_field" name="info"></textarea>
+
+    <label for="related_series_field"> Поредица от списък: </label>
+    <select id="related_series_field" name="related_series">
+        <option value="single_book">Самостоятелна книга</option>
+        <option value="">Нова поредица</option>
+        {% for related_series in list_of_dict_with_related %}
+            <option value="{{ related_series["ID"] }}"> {{ related_series["Name"] }}</option>
+        {% endfor %}
+    </select><br/>
+
+    <label for="name_new_related_series_field"> Име нова поредица: </label>
+    <input id="name_new_related_series_field" name="name_new_related_series"><br/>
+
+    <label for="description_new_related_series_field"> Описание нова поредица: </label>
+    <input id="description_new_related_series_field" name="description_new_related_series"><br/>
+
+    <label for="series_type_field"> Тип книга: </label>
+    <select id="series_type_field" name="series_type">
+        {% for series_type in list_of_dict_with_series_types %}
+            <option value="{{ series_type["ID"] }}"> {{ series_type["Type"] }}</option>
+        {% endfor %}
+    </select><br/>
+
+    <label for="read_status_field"> Статус на четене: </label>
+    <input id="read_status_field" type="checkbox" name="read_status"><br/>
+
+    <button type="submit"> Запиши нова книга</button>
+
+    <input type="hidden" name="wishlist_book_id" value="{{ wishlist_id }}">
+
+</body>
+</html>

@@ -39,6 +39,7 @@
             <td>{{ book_dict["Author"] }}</td>
             <td><a href="/edit_wishlist?id={{ book_dict["ID"] }}">Редактирай</a></td>
             <td><a href="/delete_wishlist_book?id={{ book_dict["ID"] }}">Изтрий</a></td>
+            <td><a href="/wishlist_bought?title={{ book_dict["Name"] }}&id={{ book_dict["ID"] }}">Добави в колекция</a></td>
         </tr>
     {% endfor %}
     </tbody>

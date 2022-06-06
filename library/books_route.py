@@ -2,6 +2,8 @@ from flask import Blueprint, render_template, request, redirect
 from library.database import get_connection
 from sqlalchemy.engine import CursorResult
 
+from library.new_book import new_book
+
 blueprint_books = Blueprint("Books", __name__)
 
 
@@ -192,49 +194,8 @@ def add_new_book():
                                list_of_dict_with_related=list_with_related)
 
     else:
-        bg_title: str = request.form["bg_title"]
-        eng_title: str = request.form["eng_title"]
-        format: str = request.form["format"]
-        location: str = request.form["location"]
-        author_of_list: str = request.form["author_of_list"]
-        new_author: str = request.form["new_author"]
-        related_series_list: str = request.form["related_series"]
-        new_series_name: str = request.form["name_new_related_series"]
-        new_series_description: str = request.form["description_new_related_series"]
-        type_series: str = request.form["series_type"]
-        info: str = request.form["info"]
 
-        if author_of_list == "":
-            with get_connection() as connection:
-                author_id = connection.execute("""
-                INSERT INTO "Authors"("Name")
-                VALUES (?)
-                """, new_author).lastrowid
-        else:
-            author_id = author_of_list
-
-        if related_series_list == "single_book":
-            related_series_id = None
-        elif related_series_list == "":
-            with get_connection() as connection:
-                related_series_id = connection.execute("""
-                INSERT INTO "Related"("Name", "RelationTypeID", "Description")
-                VALUES (?, ?, ?)
-                """, new_series_name, type_series, new_series_description).lastrowid
-        else:
-            related_series_id = related_series_list
-
-        if "read_status" in request.form:
-            read_status = 1
-        else:
-            read_status = 0
-
-        with get_connection() as connection:
-            new_book_id = connection.execute("""
-                INSERT INTO Books (NameBG, NameENG, AuthorID, FormatID, RelatedID, LocationID, Read, Info)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                """, bg_title, eng_title, author_id, format, related_series_id, location, read_status, info).lastrowid
-
+        new_book_id = new_book()
         return redirect(f"/single_book?id={new_book_id}")
 
 
@@ -248,3 +209,69 @@ def delete_single_book():
         """, id)
 
     return redirect("/mybooks")
+
+
+@blueprint_books.route("/wishlist_bought", methods=["GET", "POST"])
+def wishlist_bought():
+
+    if request.method == "GET":
+        id_wishlist_book = request.args["id"]
+        title_new_book = request.args["title"]
+
+        with get_connection() as connection:
+
+            authors_cursor: CursorResult = connection.execute("""
+                    SELECT * 
+                    FROM Authors
+                    """)
+
+            list_with_authors: list[dict] = authors_cursor.mappings().all()
+
+            formats_cursor: CursorResult = connection.execute("""
+                    SELECT * 
+                    FROM Formats
+                    """)
+
+            list_with_formats: list[dict] = formats_cursor.mappings().all()
+
+            locations_cursor: CursorResult = connection.execute("""
+                    SELECT * 
+                    FROM Locations
+                    """)
+
+            list_with_locations: list[dict] = locations_cursor.mappings().all()
+
+            series_type_cursor: CursorResult = connection.execute("""
+                    SELECT *
+                    FROM RelationTypes
+                    """)
+
+            list_with_series_types: list[dict] = series_type_cursor.mappings().all()
+
+            related_series_cursor: CursorResult = connection.execute("""
+                                SELECT Related.ID, Related.Name, Related.Description, RelationTypes.Type
+                                FROM Related
+                                JOIN RelationTypes ON RelationTypes.ID = Related.RelationTypeID
+                                """)
+
+            list_with_related: list[dict] = related_series_cursor.mappings().all()
+
+        return render_template("mybooks/new_book_from_wishlist.html",
+                               list_of_dict_with_authors=list_with_authors,
+                               list_of_dict_with_formats=list_with_formats,
+                               list_of_dict_with_locations=list_with_locations,
+                               list_of_dict_with_series_types=list_with_series_types,
+                               list_of_dict_with_related=list_with_related, title_new_book=title_new_book,
+                               wishlist_id=id_wishlist_book)
+
+    else:
+        wishlist_book_id = request.form["wishlist_book_id"]
+        new_book_id = new_book()
+
+        with get_connection() as connection:
+            connection.execute("""
+            DELETE FROM Wishlists
+            WHERE ID=?
+            """, wishlist_book_id)
+
+        return redirect(f"/single_book?id={new_book_id}")
