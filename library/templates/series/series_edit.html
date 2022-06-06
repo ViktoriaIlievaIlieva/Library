@@ -18,7 +18,7 @@
                 <option selected="selected"
                         value="{{ dict_with_series_info["series_type_id"] }}">{{ dict_with_series_info["type_series"] }}</option>
             {% else %}
-                <option value="{{ series_type["ID"] }}"> {{ series_type["Name"] }}</option>
+                <option value="{{ series_type["ID"] }}"> {{ series_type["Type"] }}</option>
             {% endif %}
         {% endfor %}
     </select>
