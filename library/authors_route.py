@@ -84,27 +84,3 @@ def single_author_edit():
         return redirect(f"/single_author?id={id}&author_name={author_name}")
 
 
-@blueprint_authors.route("/series")
-def series():
-    series_id = request.args["id"]
-    with get_connection() as connection:
-        series_to_cursor: CursorResult = connection.execute("""
-        SELECT Related.ID AS "series_id", Related.Name AS "series_name", Related.Description AS "series_description", 
-        RelationTypes.Type AS "series_type"
-        FROM Related
-        JOIN RelationTypes ON RelationTypes.ID = Related.RelationTypeID
-        WHERE Related.ID = ?
-        """, series_id)
-
-        series_info: list[dict] = series_to_cursor.mappings().all()
-
-        books_in_series_to_cursor: CursorResult = connection.execute("""
-        SELECT Books.NameBG AS "title", Books.ID AS "book_id"
-        FROM Books
-        Where Books.RelatedID = ?
-        """, series_id)
-
-        books_in_series: list[dict] = books_in_series_to_cursor.mappings().all()
-
-        return render_template("authors/series.html", dict_with_series_info=series_info[0],
-                               books_in_series=books_in_series)
