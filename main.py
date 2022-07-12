@@ -1,5 +1,5 @@
 from library.app import create_app
 
 app = create_app()
-app.run("localhost", 80, True)
+app.run("0.0.0.0", 80, True)
 
