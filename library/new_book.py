@@ -2,8 +2,6 @@ from flask import request
 from library.database import get_connection
 
 
-
-
 def new_book():
     bg_title: str = request.form["bg_title"]
     eng_title: str = request.form["eng_title"]
