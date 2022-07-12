@@ -1,18 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Автори</title>
-</head>
-<body>
-<h1> ♥ Автори ♥ </h1>
-<ol>
-    {% for author in list_with_dict_with_authors %}
-        <li><a href="/single_author?id={{ author["ID"] }}">{{ author["Name"] }} -
-            <a href="/single_author_edit?id={{ author["ID"] }}"> Редактирай </a> </a></li>
-    {% endfor %}
-</ol>
+{% extends "layout_1.html" %}
 
-<a href="/">Начало</a>
-</body>
-</html>
+{% block title %}Автори{% endblock %}
+
+{% block body %}
+
+    <h1> ♥ Автори ♥ </h1>
+    <ol>
+        {% for author in list_with_dict_with_authors %}
+            <li><a href="/single_author?id={{ author["ID"] }}">{{ author["Name"] }}</a></li>
+        {% endfor %}
+    </ol>
+
+{% endblock %}

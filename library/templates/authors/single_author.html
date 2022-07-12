@@ -1,38 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ author_name }}</title>
-</head>
-<body>
+{% extends "layout_1.html" %}
 
-<h1> Книги от {{ author_name }}</h1>
-<ol>
-    {% for book in list_with_dict_with_authors_books %}
-        <li>
-            <a href="/single_book?id={{ book["book_id"] }}">{{ book["title"] }}</a>
-            {% if book ["series_id"] and book ["name_of_series"] %}
-                - part of {{ book["type_of_series"] }} -
-                <a href="/series?id={{ book["series_id"] }}">{{ book["name_of_series"] }}</a>
-            {% endif %}
+{% block title %}{{ author_name }}{% endblock %}
 
-        </li><br/>
-    {% endfor %}
-</ol>
-<p>
-    {% if list_with_dict_with_all_series|length > 0 %}
-        <h3> Серии от {{ author_name }}: </h3>
-        <ol>
-            {% for series in list_with_dict_with_all_series %}
-                <li><a href="/series?id={{ series["series_id"] }}">{{ series["name_of_series"] }}</a></li> <br/>
-            {% endfor %}
-        </ol>
-    {% endif %}
-</p>
+{% block body %}
 
-<a style="margin-right: 25px" href="/">Начало</a>
-<a href="/all_authors">Виж всички автори</a>
+    <h1> Книги от {{ author_name }}</h1>
 
+    <a href="/single_author_edit?id={{ author_id }}"> Редактирай </a>
 
-</body>
-</html>
+    <ol>
+        {% for book in list_with_dict_with_authors_books %}
+            <li>
+                <a href="/single_book?id={{ book["book_id"] }}">{{ book["title"] }}</a>
+                {% if book ["series_id"] and book ["name_of_series"] %}
+                    - part of {{ book["type_of_series"] }} -
+                    <a href="/series?id={{ book["series_id"] }}">{{ book["name_of_series"] }}</a>
+                {% endif %}
+
+            </li><br/>
+        {% endfor %}
+    </ol>
+    <p>
+        {% if list_with_dict_with_all_series|length > 0 %}
+            <h3> Серии от {{ author_name }}: </h3>
+            <ol>
+                {% for series in list_with_dict_with_all_series %}
+                    <li><a href="/series?id={{ series["series_id"] }}">{{ series["name_of_series"] }}</a></li> <br/>
+                {% endfor %}
+            </ol>
+        {% endif %}
+    </p>
+
+{% endblock %}
