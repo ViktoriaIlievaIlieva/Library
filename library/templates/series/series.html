@@ -7,9 +7,15 @@
 <body>
 <h1> {{ dict_with_series_info["series_name"] }}</h1>
 
-{{ dict_with_series_info["series_type"] }}
+<p>
+    <a style="margin-right: 25px" href="/">Начало</a>
+    <a style="margin-right: 25px" href="/series_edit?id={{ dict_with_series_info["series_id"] }}">Редактирай</a>
+    <a href="/delete_series?id={{ dict_with_series_info["series_id"] }}">Изтрий</a><br/>
+</p>
 
 <h3> Книги в серията:</h3>
+{{ dict_with_series_info["series_type"] }}
+
 <p>
     {% for book in books_in_series %}
         <a href="/single_book?id={{ book["book_id"] }}">{{ book["title"] }}</a><br/>
@@ -17,8 +23,6 @@
 </p>
 
 {{ dict_with_series_info["series_description"] }}<br/>
-<p>
-    <a style="margin-right: 25px" href="/">Начало</a>
-</p>
+
 </body>
 </html>

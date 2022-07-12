@@ -15,7 +15,7 @@
     <label for="author_field"> Автор от списък: </label>
     <select id="author_field" name="author_of_list">
         <option value=""> Нов автор</option>
-        {% for author in list_of_dict_with_authors %}
+        {% for author in list_of_dict_with_authors|sort(attribute="Name")%}
             <option value="{{ author["ID"] }}">{{ author["Name"] }}</option>
         {% endfor %}
     </select><br/>
@@ -65,7 +65,13 @@
     <label for="read_status_field"> Статус на четене: </label>
     <input id="read_status_field" type="checkbox" name="read_status"><br/>
 
+    <p>
     <button type="submit"> Запиши нова книга</button>
+    </p>
+
 </form>
+
+    <a href="/mybooks">Отказ</a>
+
 </body>
 </html>
